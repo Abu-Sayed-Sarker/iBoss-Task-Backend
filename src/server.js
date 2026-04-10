@@ -2,8 +2,7 @@ import express from "express";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import { connectDB, disconnectDB } from "./config/db.js";
-import adminAuthRoutes from "./routes/admin/authRoutes.js";
-import userAuthRoutes from "./routes/user/authRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { buildOpenApiSpec } from "./docs/openapi.js";
 import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 import { ensureAdminTable } from "./models/adminModel.js";
@@ -50,8 +49,7 @@ app.use(
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // API routes
-app.use("/api/admin/auth", adminAuthRoutes);
-app.use("/api/user/auth", userAuthRoutes);
+app.use("/api/auth", authRoutes);
 
 // 404 and error handler
 app.use(notFound);

@@ -18,183 +18,10 @@ export const paths = {
       },
     },
   },
-  "/api/admin/auth/register": {
+  "/api/auth/register": {
     post: {
-      tags: ["Admin Auth"],
-      summary: "Register a new admin",
-      requestBody: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/RegisterRequest" },
-          },
-        },
-      },
-      responses: {
-        201: {
-          description: "Admin registered successfully",
-          content: {
-            "application/json": {
-              schema: {
-                allOf: [
-                  { $ref: "#/components/schemas/ApiResponse" },
-                  {
-                    type: "object",
-                    properties: {
-                      data: { $ref: "#/components/schemas/AuthData" },
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        },
-        400: {
-          description: "Validation error",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-        409: {
-          description: "Email already registered",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-      },
-    },
-  },
-  "/api/admin/auth/login": {
-    post: {
-      tags: ["Admin Auth"],
-      summary: "Login admin",
-      requestBody: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/LoginRequest" },
-          },
-        },
-      },
-      responses: {
-        200: {
-          description: "Admin logged in successfully",
-          content: {
-            "application/json": {
-              schema: {
-                allOf: [
-                  { $ref: "#/components/schemas/ApiResponse" },
-                  {
-                    type: "object",
-                    properties: {
-                      data: { $ref: "#/components/schemas/AuthData" },
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        },
-        401: {
-          description: "Invalid password",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-        404: {
-          description: "Admin not found",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-      },
-    },
-  },
-  "/api/admin/auth/profile": {
-    get: {
-      tags: ["Admin Auth"],
-      summary: "Get admin profile",
-      security: [{ bearerAuth: [] }],
-      responses: {
-        200: {
-          description: "Admin profile fetched successfully",
-          content: {
-            "application/json": {
-              schema: {
-                allOf: [
-                  { $ref: "#/components/schemas/ApiResponse" },
-                  {
-                    type: "object",
-                    properties: {
-                      data: { $ref: "#/components/schemas/Admin" },
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        },
-        401: {
-          description: "Admin is not authenticated",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-      },
-    },
-  },
-  "/api/admin/auth/all": {
-    get: {
-      tags: ["Admin Auth"],
-      summary: "Get all admins",
-      security: [{ bearerAuth: [] }],
-      responses: {
-        200: {
-          description: "All admins fetched successfully",
-          content: {
-            "application/json": {
-              schema: {
-                allOf: [
-                  { $ref: "#/components/schemas/ApiResponse" },
-                  {
-                    type: "object",
-                    properties: {
-                      data: {
-                        type: "array",
-                        items: { $ref: "#/components/schemas/Admin" },
-                      },
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        },
-        401: {
-          description: "Admin is not authenticated",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-      },
-    },
-  },
-  "/api/user/auth/register": {
-    post: {
-      tags: ["User Auth"],
-      summary: "Register a new user",
+      tags: ["Auth"],
+      summary: "Register a new user/admin",
       requestBody: {
         required: true,
         content: {
@@ -220,13 +47,21 @@ export const paths = {
             },
           },
         },
+        400: {
+          description: "Validation error",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiError" },
+            },
+          },
+        },
       },
     },
   },
-  "/api/user/auth/login": {
+  "/api/auth/login": {
     post: {
-      tags: ["User Auth"],
-      summary: "Login user",
+      tags: ["Auth"],
+      summary: "Login user/admin",
       requestBody: {
         required: true,
         content: {
@@ -237,19 +72,27 @@ export const paths = {
       },
       responses: {
         200: {
-          description: "User logged in successfully",
+          description: "Login successfully",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/UserAuthData" },
             },
           },
         },
+        401: {
+          description: "Invalid credentials",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiError" },
+            },
+          },
+        },
       },
     },
   },
-  "/api/user/auth/refresh-token": {
+  "/api/auth/refresh-token": {
     post: {
-      tags: ["User Auth"],
+      tags: ["Auth"],
       summary: "Refresh access token",
       requestBody: {
         required: true,
@@ -279,17 +122,25 @@ export const paths = {
       },
     },
   },
-  "/api/user/auth/profile": {
+  "/api/auth/profile": {
     get: {
-      tags: ["User Auth"],
-      summary: "Get user profile",
+      tags: ["Auth"],
+      summary: "Get user/admin profile",
       security: [{ bearerAuth: [] }],
       responses: {
         200: {
-          description: "User profile fetched successfully",
+          description: "Profile fetched successfully",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/User" },
+            },
+          },
+        },
+        401: {
+          description: "Not authenticated",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiError" },
             },
           },
         },
