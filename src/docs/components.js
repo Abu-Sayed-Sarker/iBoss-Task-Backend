@@ -106,5 +106,19 @@ export const components = {
         accessToken: { type: "string" },
       },
     },
+    Test: {
+      type: "object",
+      properties: {
+        id: { type: "integer" },
+        title: { type: "string" },
+        candidates: { type: "string", format: "date" },
+        start_time: { type: "string" },
+        end_time: { type: "string" },
+        duration: { type: "string" },
+        slots: { type: "integer" },
+        question_set: { type: "string" },
+        question_type: { type: "string" },
+      },
+    },
   },
 };

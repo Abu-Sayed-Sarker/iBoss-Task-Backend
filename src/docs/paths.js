@@ -147,4 +147,107 @@ export const paths = {
       },
     },
   },
+  "/api/tests/add": {
+    post: {
+      tags: ["Tests"],
+      summary: "Add a new test (Admin only)",
+      security: [{ bearerAuth: [] }],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/Test" },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: "Test created successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiResponse" },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/tests/update/{id}": {
+    patch: {
+      tags: ["Tests"],
+      summary: "Update a test by ID (Admin only)",
+      security: [{ bearerAuth: [] }],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/Test" },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Test updated successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiResponse" },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/tests/delete/{id}": {
+    delete: {
+      tags: ["Tests"],
+      summary: "Delete a test by ID (Admin only)",
+      security: [{ bearerAuth: [] }],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Test deleted successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiResponse" },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/tests/all": {
+    get: {
+      tags: ["Tests"],
+      summary: "Get all tests",
+      security: [{ bearerAuth: [] }],
+      responses: {
+        200: {
+          description: "Tests fetched successfully",
+          content: {
+            "application/json": {
+              schema: {
+                type: "array",
+                items: { $ref: "#/components/schemas/Test" },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
