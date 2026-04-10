@@ -1,19 +1,20 @@
-﻿import express from "express";
+import express from "express";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import { connectDB, disconnectDB } from "./config/db.js";
-import contactRoutes from "./routes/user/contactRoutes.js";
 import adminAuthRoutes from "./routes/admin/authRoutes.js";
+import userAuthRoutes from "./routes/user/authRoutes.js";
 import { buildOpenApiSpec } from "./docs/openapi.js";
 import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 import { ensureAdminTable } from "./models/adminModel.js";
+import { ensureUsersTable } from "./models/userModel.js";
 import env from "../env.js";
 
 ///// connect to database and ensure tables exist///
 await connectDB();
 await ensureAdminTable();
+await ensureUsersTable();
 // await ensureServicesTables();
-// await ensureUsersTable();
 
 const app = express();
 const port = env.PORT || 5001;
@@ -50,7 +51,7 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // API routes
 app.use("/api/admin/auth", adminAuthRoutes);
-app.use("/api/contact", contactRoutes);
+app.use("/api/user/auth", userAuthRoutes);
 
 // 404 and error handler
 app.use(notFound);

@@ -191,29 +191,85 @@ export const paths = {
       },
     },
   },
-  "/api/contact/send": {
+  "/api/user/auth/register": {
     post: {
-      tags: ["Contact"],
-      summary: "Send contact information",
+      tags: ["User Auth"],
+      summary: "Register a new user",
       requestBody: {
         required: true,
         content: {
           "application/json": {
-            schema: { $ref: "#/components/schemas/ContactRequest" },
+            schema: { $ref: "#/components/schemas/UserRegisterRequest" },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: "User registered successfully",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  message: { type: "string" },
+                  user: { $ref: "#/components/schemas/User" },
+                  accessToken: { type: "string" },
+                  refreshToken: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/user/auth/login": {
+    post: {
+      tags: ["User Auth"],
+      summary: "Login user",
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/LoginRequest" },
           },
         },
       },
       responses: {
         200: {
-          description: "Message sent successfully",
+          description: "User logged in successfully",
           content: {
             "application/json": {
-              schema: { $ref: "#/components/schemas/ApiResponse" },
+              schema: { $ref: "#/components/schemas/UserAuthData" },
             },
           },
         },
-        400: {
-          description: "Validation error",
+      },
+    },
+  },
+  "/api/user/auth/refresh-token": {
+    post: {
+      tags: ["User Auth"],
+      summary: "Refresh access token",
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/RefreshTokenRequest" },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Access token refreshed successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/RefreshTokenResponse" },
+            },
+          },
+        },
+        401: {
+          description: "Invalid or expired refresh token",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ApiError" },
@@ -223,64 +279,17 @@ export const paths = {
       },
     },
   },
-  "/api/contact/subscribe": {
-    post: {
-      tags: ["Contact"],
-      summary: "Subscribe to newsletter",
-      requestBody: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/SubscribeRequest" },
-          },
-        },
-      },
+  "/api/user/auth/profile": {
+    get: {
+      tags: ["User Auth"],
+      summary: "Get user profile",
+      security: [{ bearerAuth: [] }],
       responses: {
         200: {
-          description: "Message sent successfully",
+          description: "User profile fetched successfully",
           content: {
             "application/json": {
-              schema: { $ref: "#/components/schemas/ApiResponse" },
-            },
-          },
-        },
-        400: {
-          description: "Validation error",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
-            },
-          },
-        },
-      },
-    },
-  },
-  "/api/contact/book-a-call": {
-    post: {
-      tags: ["Contact"],
-      summary: "Book a call",
-      requestBody: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/CallRequest" },
-          },
-        },
-      },
-      responses: {
-        200: {
-          description: "Message sent successfully",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiResponse" },
-            },
-          },
-        },
-        400: {
-          description: "Validation error",
-          content: {
-            "application/json": {
-              schema: { $ref: "#/components/schemas/ApiError" },
+              schema: { $ref: "#/components/schemas/User" },
             },
           },
         },

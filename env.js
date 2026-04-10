@@ -24,7 +24,7 @@ const env = {
   DB_PORT: toInt(getEnv("DB_PORT", "5432"), 5432),
   DB_USER: getEnv("DB_USER", "postgres"),
   DB_PASS: getEnv("DB_PASS", "1234"),
-  DB_NAME: getEnv("DB_NAME", "sayed"),
+  DB_NAME: getEnv("DB_NAME", "`sayed`"),
   ACCESS_TOKEN_SECRET:
     getEnv("ACCESS_TOKEN_SECRET") ||
     getEnv("JWT_SECRET", "access-secret-key"),

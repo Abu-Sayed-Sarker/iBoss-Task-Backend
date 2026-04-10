@@ -1,4 +1,4 @@
-﻿export const components = {
+export const components = {
   securitySchemes: {
     bearerAuth: {
       type: "http",
@@ -62,28 +62,48 @@
         password: { type: "string", example: "SecurePass123!" },
       },
     },
-    ContactRequest: {
+    User: {
       type: "object",
-      required: ["name", "email", "number", "source"],
       properties: {
-        name: { type: "string", example: "Jane Doe" },
-        email: { type: "string", format: "email", example: "jane@mail.com" },
-        number: { type: "string", example: "1234567890" },
-        source: { type: "string", example: "Website" },
+        id: { type: "integer", example: 1 },
+        name: { type: "string", example: "John Doe" },
+        email: { type: "string", format: "email", example: "user@mail.com" },
+        referral_id: { type: "string", example: "REF123" },
+        role: { type: "string", example: "user" },
+        created_at: { type: "string", format: "date-time" },
       },
     },
-    SubscribeRequest: {
+    UserRegisterRequest: {
       type: "object",
-      required: ["email"],
+      required: ["name", "email", "password"],
       properties: {
-        email: { type: "string", format: "email", example: "jane@mail.com" },
+        name: { type: "string", example: "John Doe" },
+        email: { type: "string", format: "email", example: "user@mail.com" },
+        password: { type: "string", example: "password123" },
+        referral_id: { type: "string", example: "REF123" },
+        role: { type: "string", example: "user", enum: ["user", "admin"] },
       },
     },
-    CallRequest: {
+    UserAuthData: {
       type: "object",
-      required: ["phone"],
       properties: {
-        phone: { type: "string", example: "1234567890" },
+        message: { type: "string", example: "Login successful" },
+        user: { $ref: "#/components/schemas/User" },
+        accessToken: { type: "string" },
+        refreshToken: { type: "string" },
+      },
+    },
+    RefreshTokenRequest: {
+      type: "object",
+      required: ["refreshToken"],
+      properties: {
+        refreshToken: { type: "string" },
+      },
+    },
+    RefreshTokenResponse: {
+      type: "object",
+      properties: {
+        accessToken: { type: "string" },
       },
     },
   },
