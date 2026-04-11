@@ -62,3 +62,16 @@ export const getTests = asyncHandler(async (req, res) => {
     new ApiResponse(200, tests, "Tests fetched successfully")
   );
 });
+
+export const getTestDetails = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const test = await testModel.findTestWithQuestionsById(id);
+  
+  if (!test) {
+    throw new ApiError(404, "Test not found");
+  }
+
+  return res.json(
+    new ApiResponse(200, test, "Test details fetched successfully")
+  );
+});

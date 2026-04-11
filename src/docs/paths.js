@@ -230,6 +230,39 @@ export const paths = {
       },
     },
   },
+  "/api/tests/{id}": {
+    get: {
+      tags: ["Tests"],
+      summary: "Get test details by ID",
+      security: [{ bearerAuth: [] }],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Test details fetched successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Test" },
+            },
+          },
+        },
+        404: {
+          description: "Test not found",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiError" },
+            },
+          },
+        },
+      },
+    },
+  },
   "/api/tests/all": {
     get: {
       tags: ["Tests"],
@@ -243,6 +276,115 @@ export const paths = {
               schema: {
                 type: "array",
                 items: { $ref: "#/components/schemas/Test" },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/questions": {
+    post: {
+      tags: ["Questions"],
+      summary: "Add a new question to a test (Admin only)",
+      security: [{ bearerAuth: [] }],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/Question" },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: "Question created successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiResponse" },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/questions/{id}": {
+    patch: {
+      tags: ["Questions"],
+      summary: "Update a question by ID (Admin only)",
+      security: [{ bearerAuth: [] }],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/Question" },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Question updated successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiResponse" },
+            },
+          },
+        },
+      },
+    },
+    delete: {
+      tags: ["Questions"],
+      summary: "Delete a question by ID (Admin only)",
+      security: [{ bearerAuth: [] }],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Question deleted successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiResponse" },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/api/questions/test/{testId}": {
+    get: {
+      tags: ["Questions"],
+      summary: "Get all questions for a specific test",
+      security: [{ bearerAuth: [] }],
+      parameters: [
+        {
+          name: "testId",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Questions fetched successfully",
+          content: {
+            "application/json": {
+              schema: {
+                type: "array",
+                items: { $ref: "#/components/schemas/Question" },
               },
             },
           },

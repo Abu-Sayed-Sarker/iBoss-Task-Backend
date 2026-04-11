@@ -118,6 +118,32 @@ export const components = {
         slots: { type: "integer" },
         question_set: { type: "string" },
         question_type: { type: "string" },
+        questions: {
+          type: "array",
+          items: { $ref: "#/components/schemas/Question" },
+        },
+      },
+    },
+    Question: {
+      type: "object",
+      required: ["test_id", "question"],
+      properties: {
+        id: { type: "integer" },
+        test_id: { type: "integer" },
+        question: { type: "string" },
+        description: { type: "string", nullable: true },
+        options: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              label: { type: "string" },
+              isCorrect: { type: "boolean" },
+            },
+          },
+        },
+        points: { type: "string" },
+        type: { type: "string", example: "MCQ" },
       },
     },
   },

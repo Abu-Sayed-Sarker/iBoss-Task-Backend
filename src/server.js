@@ -8,7 +8,9 @@ import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 import { ensureAdminTable } from "./models/adminModel.js";
 import { ensureUsersTable } from "./models/userModel.js";
 import { ensureTestsTable } from "./models/testModel.js";
+import { ensureQuestionsTable } from "./models/questionModel.js";
 import testRoutes from "./routes/testRoutes.js";
+import questionRoutes from "./routes/questionRoutes.js";
 import env from "../env.js";
 
 ///// connect to database and ensure tables exist///
@@ -16,6 +18,7 @@ await connectDB();
 await ensureAdminTable();
 await ensureUsersTable();
 await ensureTestsTable();
+await ensureQuestionsTable();
 // await ensureServicesTables();
 
 const app = express();
@@ -54,6 +57,7 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tests", testRoutes);
+app.use("/api/questions", questionRoutes);
 
 // 404 and error handler
 app.use(notFound);

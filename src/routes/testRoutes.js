@@ -12,5 +12,6 @@ router.delete("/delete/:id", auth, isAdmin, testController.deleteTest);
 
 // Public or User routes (if needed)
 router.get("/all", auth, testController.getTests);
+router.get("/:id", auth, testController.getTestDetails);
 
 export default router;

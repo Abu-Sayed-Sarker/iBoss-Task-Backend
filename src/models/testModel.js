@@ -58,8 +58,35 @@ export const deleteTest = async (id) => {
 };
 
 export const getAllTests = async () => {
-  const { rows } = await postgresClient.query("SELECT * FROM tests ORDER BY created_at DESC");
+  const { rows } = await postgresClient.query(`
+    SELECT 
+      t.*, 
+      COALESCE(
+        JSON_AGG(q.* ORDER BY q.created_at ASC) FILTER (WHERE q.id IS NOT NULL), 
+        '[]'
+      ) as questions
+    FROM tests t
+    LEFT JOIN questions q ON t.id = q.test_id
+    GROUP BY t.id
+    ORDER BY t.created_at DESC
+  `);
   return rows;
+};
+
+export const findTestWithQuestionsById = async (id) => {
+  const { rows } = await postgresClient.query(`
+    SELECT 
+      t.*, 
+      COALESCE(
+        JSON_AGG(q.* ORDER BY q.created_at ASC) FILTER (WHERE q.id IS NOT NULL), 
+        '[]'
+      ) as questions
+    FROM tests t
+    LEFT JOIN questions q ON t.id = q.test_id
+    WHERE t.id = $1
+    GROUP BY t.id
+  `, [id]);
+  return rows[0] || null;
 };
 
 export const findTestById = async (id) => {

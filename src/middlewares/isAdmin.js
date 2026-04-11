@@ -6,9 +6,6 @@ const isAdmin = (req, res, next) => {
 
   const token = req.headers.authorization?.split(" ")[1];
   const decoded = verifyAccessToken(token);
-
-  console.log(decoded.role);
-
   if (decoded.role === "admin") {
     return next();
   }
