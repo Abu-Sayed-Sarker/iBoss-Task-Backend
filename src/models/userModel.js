@@ -58,18 +58,3 @@ export const comparePassword = async (plainPassword, hashedPassword) => {
   return await bcrypt.compare(plainPassword, hashedPassword);
 };
 
-export const seedAdmin = async () => {
-    const adminEmail = "abusayed9672@gmail.com";
-    const existingAdmin = await findUserByEmail(adminEmail);
-    
-    if (!existingAdmin) {
-        console.log("Seeding initial admin account...");
-        await createUser({
-            name: "Abu Sayed",
-            email: adminEmail,
-            password: "Pa$$w0rd!",
-            role: "admin"
-        });
-        console.log("Admin account created successfully.");
-    }
-};

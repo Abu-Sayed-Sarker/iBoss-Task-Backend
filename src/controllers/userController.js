@@ -46,6 +46,43 @@ export const register = asyncHandler(async (req, res) => {
   }
 });
 
+export const adminRegister = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    throw new ApiError(400, "Name, email and password are required");
+  }
+
+  try {
+    const newUser = await userModel.createUser({
+      name,
+      email,
+      password,
+      role: "admin",
+    });
+
+    const accessToken = generateAccessToken(newUser);
+    const refreshToken = generateRefreshToken(newUser);
+
+    return res.status(201).json(
+      new ApiResponse(
+        201,
+        {
+          user: newUser,
+          accessToken,
+          refreshToken,
+        },
+        "Admin account created successfully",
+      ),
+    );
+  } catch (error) {
+    if (error.message === "Email already registered") {
+      throw new ApiError(400, error.message);
+    }
+    throw error;
+  }
+});
+
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 

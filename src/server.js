@@ -6,7 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import { buildOpenApiSpec } from "./docs/openapi.js";
 import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 import { ensureAdminTable } from "./models/adminModel.js";
-import { ensureUsersTable, seedAdmin } from "./models/userModel.js";
+import { ensureUsersTable } from "./models/userModel.js";
 import { ensureTestsTable } from "./models/testModel.js";
 import { ensureQuestionsTable } from "./models/questionModel.js";
 import { ensureExamsTables } from "./models/examModel.js";
@@ -19,7 +19,7 @@ import env from "../env.js";
 await connectDB();
 await ensureAdminTable();
 await ensureUsersTable();
-await seedAdmin();
+
 await ensureTestsTable();
 await ensureQuestionsTable();
 await ensureExamsTables();
