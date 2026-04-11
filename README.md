@@ -80,6 +80,16 @@ npm run dev
 npm start
 ```
 
+### 🐳 Docker Setup (Recommended)
+The easiest way to run the application and the database together is using Docker.
+
+1. **Build and start services**:
+   ```bash
+   docker-compose up --build
+   ```
+2. **Access the API**: The app will be available at `http://localhost:5001`.
+3. **Database**: PostgreSQL will be running on port `5432` with a persistent volume.
+
 ---
 
 ## 🛣 API Endpoints (Quick Overview)
