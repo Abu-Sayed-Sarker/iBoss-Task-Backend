@@ -58,6 +58,46 @@ export const paths = {
       },
     },
   },
+  "/api/auth/admin-register": {
+    post: {
+      tags: ["Auth"],
+      summary: "Register a new admin account",
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/AdminRegisterRequest" },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: "Admin account created successfully",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  message: { type: "string" },
+                  user: { $ref: "#/components/schemas/User" },
+                  accessToken: { type: "string" },
+                  refreshToken: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+        400: {
+          description: "Validation error",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ApiError" },
+            },
+          },
+        },
+      },
+    },
+  },
   "/api/auth/login": {
     post: {
       tags: ["Auth"],

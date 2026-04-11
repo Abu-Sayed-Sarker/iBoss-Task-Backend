@@ -84,6 +84,15 @@ export const components = {
         role: { type: "string", example: "user", enum: ["user", "admin"] },
       },
     },
+    AdminRegisterRequest: {
+      type: "object",
+      required: ["name", "email", "password"],
+      properties: {
+        name: { type: "string", example: "Admin User" },
+        email: { type: "string", format: "email", example: "admin@mail.com" },
+        password: { type: "string", example: "adminPassword123" },
+      },
+    },
     UserAuthData: {
       type: "object",
       properties: {
