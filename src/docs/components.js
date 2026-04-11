@@ -122,6 +122,8 @@ export const components = {
           type: "array",
           items: { $ref: "#/components/schemas/Question" },
         },
+        is_submitted: { type: "boolean", example: false },
+        submission_count: { type: "integer", example: 10 },
       },
     },
     Question: {
@@ -144,6 +146,19 @@ export const components = {
         },
         points: { type: "string" },
         type: { type: "string", example: "MCQ" },
+      },
+    },
+    UserExam: {
+      type: "object",
+      properties: {
+        id: { type: "integer" },
+        user_id: { type: "integer" },
+        test_id: { type: "integer" },
+        score: { type: "number" },
+        is_submitted: { type: "boolean" },
+        started_at: { type: "string", format: "date-time" },
+        submitted_at: { type: "string", format: "date-time", nullable: true },
+        test_title: { type: "string", nullable: true },
       },
     },
   },

@@ -392,4 +392,103 @@ export const paths = {
       },
     },
   },
+  "/api/exams/start": {
+    post: {
+      tags: ["Exams"],
+      summary: "Start an exam for a test",
+      security: [{ bearerAuth: [] }],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              required: ["testId"],
+              properties: { testId: { type: "integer" } },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Exam started",
+          content: { "application/json": { schema: { $ref: "#/components/schemas/ApiResponse" } } },
+        },
+      },
+    },
+  },
+  "/api/exams/submit-answer": {
+    post: {
+      tags: ["Exams"],
+      summary: "Submit an answer for a question",
+      security: [{ bearerAuth: [] }],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              required: ["testId", "questionId", "selectedOptionIndex"],
+              properties: {
+                testId: { type: "integer" },
+                questionId: { type: "integer" },
+                selectedOptionIndex: { type: "integer" },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Answer submitted",
+          content: { "application/json": { schema: { $ref: "#/components/schemas/ApiResponse" } } },
+        },
+      },
+    },
+  },
+  "/api/exams/finalize": {
+    post: {
+      tags: ["Exams"],
+      summary: "Finalize and submit the entire exam",
+      security: [{ bearerAuth: [] }],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              required: ["testId"],
+              properties: { testId: { type: "integer" } },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Exam finalized with score",
+          content: { "application/json": { schema: { $ref: "#/components/schemas/ApiResponse" } } },
+        },
+      },
+    },
+  },
+  "/api/exams/my-results": {
+    get: {
+      tags: ["Exams"],
+      summary: "Get current user's exam results",
+      security: [{ bearerAuth: [] }],
+      responses: {
+        200: {
+          description: "Results fetched",
+          content: {
+            "application/json": {
+              schema: {
+                type: "array",
+                items: { $ref: "#/components/schemas/UserExam" },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };

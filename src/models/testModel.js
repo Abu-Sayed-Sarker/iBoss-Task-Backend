@@ -57,19 +57,22 @@ export const deleteTest = async (id) => {
   return rows[0] || null;
 };
 
-export const getAllTests = async () => {
+export const getAllTests = async (userId = null) => {
   const { rows } = await postgresClient.query(`
     SELECT 
       t.*, 
       COALESCE(
         JSON_AGG(q.* ORDER BY q.created_at ASC) FILTER (WHERE q.id IS NOT NULL), 
         '[]'
-      ) as questions
+      ) as questions,
+      COALESCE(ue.is_submitted, FALSE) as is_submitted,
+      (SELECT COUNT(id) FROM user_exams WHERE test_id = t.id AND is_submitted = TRUE) as submission_count
     FROM tests t
     LEFT JOIN questions q ON t.id = q.test_id
-    GROUP BY t.id
+    LEFT JOIN user_exams ue ON t.id = ue.test_id AND ue.user_id = $1
+    GROUP BY t.id, ue.is_submitted
     ORDER BY t.created_at DESC
-  `);
+  `, [userId]);
   return rows;
 };
 
@@ -80,7 +83,8 @@ export const findTestWithQuestionsById = async (id) => {
       COALESCE(
         JSON_AGG(q.* ORDER BY q.created_at ASC) FILTER (WHERE q.id IS NOT NULL), 
         '[]'
-      ) as questions
+      ) as questions,
+      (SELECT COUNT(id) FROM user_exams WHERE test_id = t.id AND is_submitted = TRUE) as submission_count
     FROM tests t
     LEFT JOIN questions q ON t.id = q.test_id
     WHERE t.id = $1

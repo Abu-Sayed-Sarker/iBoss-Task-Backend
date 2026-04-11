@@ -9,8 +9,10 @@ import { ensureAdminTable } from "./models/adminModel.js";
 import { ensureUsersTable } from "./models/userModel.js";
 import { ensureTestsTable } from "./models/testModel.js";
 import { ensureQuestionsTable } from "./models/questionModel.js";
+import { ensureExamsTables } from "./models/examModel.js";
 import testRoutes from "./routes/testRoutes.js";
 import questionRoutes from "./routes/questionRoutes.js";
+import examRoutes from "./routes/examRoutes.js";
 import env from "../env.js";
 
 ///// connect to database and ensure tables exist///
@@ -19,6 +21,7 @@ await ensureAdminTable();
 await ensureUsersTable();
 await ensureTestsTable();
 await ensureQuestionsTable();
+await ensureExamsTables();
 // await ensureServicesTables();
 
 const app = express();
@@ -58,6 +61,7 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/auth", authRoutes);
 app.use("/api/tests", testRoutes);
 app.use("/api/questions", questionRoutes);
+app.use("/api/exams", examRoutes);
 
 // 404 and error handler
 app.use(notFound);

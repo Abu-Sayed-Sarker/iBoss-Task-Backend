@@ -57,7 +57,8 @@ export const deleteTest = asyncHandler(async (req, res) => {
 });
 
 export const getTests = asyncHandler(async (req, res) => {
-  const tests = await testModel.getAllTests();
+  const userId = req.user?.id || null;
+  const tests = await testModel.getAllTests(userId);
   return res.json(
     new ApiResponse(200, tests, "Tests fetched successfully")
   );
